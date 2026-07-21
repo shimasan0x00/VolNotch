@@ -1,130 +1,125 @@
-# VolNotch
+# VolNotch 🔉
 
-Amazon **Fire Max 11 (第3世代 / Fire OS 8.3.3.8 = Android 11 / API 30)** 向けの、メディア音量を **1 刻み**で調整する補助アプリ。
+**Amazon Fire Max 11 のメディア音量を「1」まで細かく下げるための小さな補助アプリ**
 
-ハードウェアボタンではメディア音量が 4 刻みでしか変わらず「1」に設定できない問題を、`AudioManager.setStreamVolume()` を直接呼ぶことで解決する。Google Play Services に依存しないため、サイドロードで使える。
+Fire Max 11 のメディア音量は内部的に **25 段階**（インデックス 0〜25）しかなく、0〜100 で考えると **1 段階 ＝ 約 4（＝ 1/25 ≒ 4%）** という粗さです。ハードウェアの音量ボタンでもこの刻みより細かくは変えられず、100 換算で「1」のような小さな音量にはできません。VolNotch は **音量インデックスを 1 刻みで直接指定**でき、さらに **出力全体を dB 単位で減衰**することで、インデックス 1（≒ 4%）よりも小さく絞れます。Google Play Services 不要・サイドロードで動作します。
 
-## 機能
-### 粗調整（ストリームインデックス）
-- 選択中ストリームの現在音量 `現在値 / 最大値` を表示
-- SeekBar で 0〜max を **1 刻み**で設定
-- 「−1」「+1」ボタンで 1 ずつ増減
-- 「音量を 1 にする」ワンタップ設定
-- **自動追従**: 物理ボタン・他アプリでの音量変更を UI へ即時反映（`ContentObserver`）
-- **ストリーム切替**: メディア / 着信音 / 通知 / アラーム / システムを Spinner で選択
+---
 
-### 全体の微調整（他アプリ含む・dB）
-`setStreamVolume` の分解能は端末依存のインデックス（Fire Max 11 では最大 25 = 最小刻み 1/25 ≒ 4%）が下限で、これより細かくはできません。そこで **出力全体に減衰エフェクト（`DynamicsProcessing`）をグローバル出力(session 0)へ適用**し、**index=1 よりさらに小さく・dB 単位で細かく**絞れるようにしています。
+> ## ⚠️ 免責事項 — 必ずお読みください
+>
+> 本アプリは **MIT ライセンス**のもと **現状有姿（AS IS）** で提供される個人制作物です。
+>
+> - **利用はすべて完全な自己責任**です。
+> - **作者および本リポジトリの提供者は、本アプリの使用・誤用・不具合によって生じたいかなる損害についても一切の責任を負いません。** これには、端末の不具合、データの損失、**大音量による聴覚障害を含む健康被害**、その他直接・間接を問わずあらゆる損害が含まれます。
+> - 本アプリは**音量・音声出力を操作する性質上、環境や端末によっては予期せぬ大音量が出る可能性**があります。イヤホン使用時などは特にご注意ください。
+> - 動作の保証は一切ありません。ご自身の判断と責任においてご利用ください。
+>
+> **上記に同意できない場合は、ダウンロード・インストール・使用をしないでください。**
 
-- スライダー / 「−1 dB」「+1 dB」/ 「0 dB に戻す」で 0〜−40 dB を調整（負ほど静か）
-- 0 dB のときはサービスを停止して素通し
-- 設定値は保存され、次回起動時に復元・再適用される
-- **持続性**: 減衰は前面サービス（[AttenuationService](app/src/main/java/com/volnotch/AttenuationService.kt)）が保持するため、**他アプリ使用中や VolNotch を閉じた後も維持**される。適用中は通知「VolNotch 全体減衰: −X dB」が常駐し、通知の「解除」または本体の「0 dB に戻す」で停止できる。
-- **⚠ 端末依存**: グローバル出力への効果適用が許可されるかは端末次第。使用不可の場合は画面に「全体微調整: この端末では使用できません」と表示され、微調整 UI は無効化される（Fire Max 11 実機では利用可能・他アプリにも効くことを確認済み）。
+---
 
-## プロジェクト仕様（検証済み: 2026-07 時点）
+## 📥 ダウンロード
+
+ビルド済みの APK は **[Releases](../../releases)** から入手できます（GitHub アカウントなしでダウンロード可）。
+
+- **latest**: `main` の最新ビルド（`VolNotch.apk`）
+- **v タグ**: バージョン付きビルド（`VolNotch-vX.Y.Z.apk`）
+
+> APK は **debug 署名**です（サイドロード用途では問題なくインストールできます）。Play ストア等の正規署名ではありません。
+
+## 📲 インストール（サイドロード）
+
+1. `VolNotch.apk` を Fire Max 11 に転送（クラウド / USB メモリ / ダウンロード等）。
+2. Fire 側で **設定 → セキュリティとプライバシー → 不明ソースからのアプリ** を許可。
+3. ファイルマネージャで APK をタップしてインストール。
+
+## 🕹 使い方
+
+### 粗調整（1 刻み）
+1. 起動すると、選択中ストリーム（既定＝メディア）の現在音量が `現在値 / 最大値` で表示されます。
+2. 上部の **Spinner** で対象ストリーム（メディア / 着信音 / 通知 / アラーム / システム）を切り替え。
+3. **スライダー**を 1 刻みで動かす、または **「−1」「+1」「音量を 1 にする」** で調整。
+4. 物理ボタンや他アプリで音量が変わっても、表示は自動で追従します。
+
+### 全体の微調整（もっと小さく）
+5. 画面下部の **「全体の微調整」** スライダー / **「−1 dB」「+1 dB」「0 dB に戻す」** で、出力全体を dB 単位で減衰できます（`1` でもまだ大きいときに使用）。
+6. 減衰中は通知 **「VolNotch 全体減衰: −X dB」** が常駐し、**他アプリ使用中や本アプリを閉じても維持**されます。通知の **「解除」** か **「0 dB に戻す」** で停止します。
+
+> 💡 Fire Max 11 のメディア最大インデックスは **25**。`1` でもそれなりに音が出るため、より静かにしたいときは「全体の微調整」を併用してください。
+> なお「全体の微調整」は端末が対応していない場合、画面に「使用できません」と表示され無効化されます（Fire Max 11 では動作確認済み）。
+
+---
+
+## 🛠 ソースからビルドする（開発者向け）
+
+CI（GitHub Actions）が自動ビルドしますが、手元でビルドしたい場合は以下。
+
+- **クイック（SDK 導入済みの場合）**
+  ```bash
+  ./gradlew assembleDebug
+  # 生成物: app/build/outputs/apk/debug/app-debug.apk
+  ```
+  Gradle Wrapper（`gradlew` / `gradle-wrapper.jar`）は同梱済みで、初回に Gradle 9.3.1 を自動取得します。
+
+- **WSL2 でゼロから環境構築する手順** … [BUILD.md](BUILD.md)（sudo 版）/ 本 README 末尾の詳細版を参照。
+
+### 技術仕様
 | 項目 | 値 |
 |---|---|
-| 言語 | Kotlin（AGP 9 のビルトイン Kotlin。`org.jetbrains.kotlin.android` は不要） |
-| AGP / Gradle | 9.1.1 / 9.3.1（AGP 9.1.1 は Gradle 9.3.1 以上が必須） |
+| 言語 | Kotlin（AGP 9 のビルトイン Kotlin。`org.jetbrains.kotlin.android` 不要） |
+| AGP / Gradle | 9.1.1 / 9.3.1 |
 | JDK | 17 |
-| build-tools | 36.0.0 |
-| compileSdk | 36（platform は `android-36`） |
-| minSdk / targetSdk | 30 / 30 |
+| build-tools / compileSdk | 36.0.0 / 36 |
+| minSdk / targetSdk | 30 / 30（Fire OS 8 = Android 11 = API 30） |
 | 外部依存 | なし（framework View のみ。AndroidX / Material ライブラリ不使用） |
 | namespace / applicationId | `com.volnotch` |
 
 ---
 
-## ビルド手順（WSL2 / CLI）
+## 📄 ライセンス
 
-> Gradle Wrapper（`gradlew` / `gradle/wrapper/gradle-wrapper.jar`）はリポジトリに同梱済み。
-> SDK さえ用意すれば `./gradlew assembleDebug` だけでビルドできる（`./gradlew` が Gradle 9.3.1 を自動取得する）。
+[MIT License](LICENSE) © 2026 shimasan0x00
 
-### 1. JDK 17 を用意
+---
 
-**A. `sudo` が使える場合（apt）**
+<details>
+<summary>WSL2 CLI でゼロから環境構築する詳細手順</summary>
+
+### 1. JDK 17
 ```bash
+# sudo が使える場合
 sudo apt update && sudo apt install -y openjdk-17-jdk unzip wget
+# sudo 不可なら ~/opt にポータブル JDK を展開（BUILD.md 参照）
 ```
 
-**B. `sudo` が使えない場合（ポータブル JDK を $HOME に展開）**
-```bash
-mkdir -p ~/opt && cd ~/opt
-curl -fL -o jdk17.tar.gz \
-  "https://api.adoptium.net/v3/binary/latest/17/ga/linux/x64/jdk/hotspot/normal/eclipse"
-tar -xzf jdk17.tar.gz
-# 展開されたディレクトリ名（例: jdk-17.0.x+y）を JAVA_HOME に設定
-export JAVA_HOME="$HOME/opt/$(ls ~/opt | grep -E '^jdk-17' | head -1)"
-export PATH="$JAVA_HOME/bin:$PATH"
-java -version   # 17.x が出れば OK
-```
-
-### 2. Android cmdline-tools を Google 公式 zip から取得
+### 2. Android cmdline-tools
 ```bash
 mkdir -p ~/android-sdk/cmdline-tools && cd ~/android-sdk/cmdline-tools
 wget https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip
 unzip commandlinetools-linux-*.zip
-mv cmdline-tools latest      # bin/ が latest/ 直下に来る構成にする（重要）
+mv cmdline-tools latest
 ```
 
-### 3. 環境変数（`~/.bashrc` に追記して永続化）
+### 3. 環境変数（`~/.bashrc`）
 ```bash
 export ANDROID_HOME=$HOME/android-sdk
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-# JDK B ルートを使った場合は JAVA_HOME / PATH も併せて追記する
 ```
 
-### 4. SDK パッケージ導入
+### 4. SDK パッケージ
 ```bash
 yes | sdkmanager --licenses
 sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 ```
 
-> Wrapper は同梱済みのため、以前必要だった `gradle wrapper` による生成手順は不要になった。
-
-### 5. SDK の場所を Gradle に伝える（どちらか一方）
+### 5. ビルド
 ```bash
-# 方法A: local.properties を作る（ANDROID_HOME を export 済みなら不要な場合が多い）
-echo "sdk.dir=$HOME/android-sdk" > /home/shimasan0x00/products/VolNotch/local.properties
-# 方法B: ANDROID_HOME を export しておく（手順3で対応済み）
+echo "sdk.dir=$HOME/android-sdk" > local.properties
+./gradlew assembleDebug   # 初回に Gradle 9.3.1 を自動取得
 ```
 
-### 6. ビルド
-```bash
-cd /home/shimasan0x00/products/VolNotch
-./gradlew assembleDebug
-# 生成物: app/build/outputs/apk/debug/app-debug.apk
-```
+### Fire への adb（任意）
+WSL2 は USB を直接認識しないため、`adb` 直結は不可。usbipd-win で USB パススルー、Windows 側 `adb install`、または adb over TCP/IP を利用。詳細は [BUILD.md](BUILD.md)。
 
----
-
-## Fire Max 11 へインストール（サイドロード）
-
-WSL2 は USB を直接認識しないため、`adb` で直結できない点に注意。
-
-### 推奨: adb 不要ルート（自分用アプリならこれで十分）
-1. `app-debug.apk` をクラウド / USB メモリ等で Fire へ転送。
-2. Fire 側「設定 > セキュリティとプライバシー > 不明ソースからのアプリ」を許可。
-3. ファイルマネージャで APK をタップしてインストール。
-
-### 代替: adb を使いたい場合
-- **usbipd-win**: Windows 側で USB を WSL2 へパススルー（`device is busy` で詰まる報告あり）。
-- **Windows 側の adb**: APK を `/mnt/c/...` にコピーし Windows の `adb install` で流す。
-- **adb over TCP/IP**: Fire を同一ネットワークに置きワイヤレス接続。
-
----
-
-## 使い方
-### 粗調整
-1. アプリを起動すると、選択中ストリーム（既定=メディア）の現在音量が表示される。
-2. Spinner で対象ストリームを切り替えられる。
-3. SeekBar を 1 刻みで動かす / 「−1」「+1」 / 「音量を 1 にする」で調整。
-4. 物理ボタンや他アプリで音量が変わっても UI が自動で追従する。
-
-### 全体の微調整（さらに小さく）
-5. 画面下部の「全体の微調整」スライダー / 「−1 dB」「+1 dB」 / 「0 dB に戻す」で、出力全体を dB 単位で減衰させる（index=1 でも大きいときに使う）。
-6. 減衰中は通知「VolNotch 全体減衰: −X dB」が常駐し、他アプリ使用中や本アプリを閉じても維持される。通知の「解除」または「0 dB に戻す」で停止。
-
-> メモ: Fire Max 11 のメディア最大インデックスは 25 のため、「1」でもそれなりに音が出る。より静かにしたいときは「全体の微調整」を併用する。
-> 着信音 / 通知を 0 にする操作は、端末により通知ポリシー(DND)アクセスが必要で無視されることがある。
+</details>
