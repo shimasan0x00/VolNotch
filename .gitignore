@@ -13,4 +13,5 @@
 # Gradle Wrapper は生成物だが、生成後は追跡してよい（コメントアウトのまま = 追跡する）
 # /gradle/wrapper/gradle-wrapper.jar
 
-# plan/ は意図的にリポジトリへ含める（無視しない）。
+# 計画ファイルは追跡しない（ローカルには残す）。
+/plan/

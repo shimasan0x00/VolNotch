@@ -30,24 +30,19 @@ export ANDROID_HOME=$HOME/android-sdk
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
 ```
 
-## 4. SDK パッケージ導入 + Gradle Wrapper 生成
+## 4. SDK パッケージ導入
 ```bash
 yes | sdkmanager --licenses
 sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
-
-# Gradle 9.3.1 を取得して wrapper を生成（gradlew / gradle-wrapper.jar が作られる）
-mkdir -p ~/opt && cd ~/opt
-wget https://services.gradle.org/distributions/gradle-9.3.1-bin.zip
-unzip -q gradle-9.3.1-bin.zip
-cd /home/shimasan0x00/products/VolNotch
-~/opt/gradle-9.3.1/bin/gradle wrapper --gradle-version 9.3.1 --distribution-type bin
 ```
+
+> Gradle Wrapper（`gradlew` / `gradle-wrapper.jar`）は同梱済み。以前の `gradle wrapper` 生成手順は不要。
 
 ## 5. SDK の場所を Gradle に伝える + ビルド
 ```bash
 cd /home/shimasan0x00/products/VolNotch
 echo "sdk.dir=$HOME/android-sdk" > local.properties
-./gradlew assembleDebug
+./gradlew assembleDebug   # 初回は gradlew が Gradle 9.3.1 を自動取得
 # 生成物: app/build/outputs/apk/debug/app-debug.apk
 ```
 
