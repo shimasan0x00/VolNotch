@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId = "com.volnotch"
-        minSdk = 30      // Fire OS 8 = Android 11 = API 30
-        targetSdk = 30   // Amazon 公式が API 30 target を推奨
+        minSdk = 28      // Fire OS 7 = Android 9 = API 28（Fire OS 7/8 の Fire タブレットをカバー。DynamicsProcessing も API28）
+        targetSdk = 30   // Fire OS 8 = Android 11。Amazon 公式が API 30 target を推奨
         versionCode = 1
         versionName = "1.0"
     }
