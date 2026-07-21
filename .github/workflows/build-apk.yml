@@ -1,0 +1,71 @@
+name: Build APK
+
+# main への push（PR マージ含む）で最新ビルドを Releases の "latest" に、
+# タグ v* の push でバージョン付き Release を発行する。手動実行も可能。
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write   # Release 作成・アセット添付に必要
+
+# 同一 ref の古い実行はキャンセル（latest リリースの競合回避）
+concurrency:
+  group: build-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install SDK packages (android-36 / build-tools 36)
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Build debug APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: VolNotch-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SRC="app/build/outputs/apk/debug/app-debug.apk"
+          NOTES="自動ビルドされた debug 署名 APK（サイドロード用）。**完全に自己責任**でご利用ください。作者・提供者は一切の責任を負いません。詳細は README を参照。"
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF_NAME}"
+            cp "$SRC" "VolNotch-${TAG}.apk"
+            gh release create "$TAG" "VolNotch-${TAG}.apk" \
+              --title "VolNotch ${TAG}" --notes "$NOTES"
+          else
+            cp "$SRC" "VolNotch.apk"
+            # 既存 latest を消して現在の commit に貼り直す
+            gh release delete latest --cleanup-tag --yes 2>/dev/null || true
+            gh release create latest "VolNotch.apk" \
+              --title "VolNotch (latest / main)" --notes "$NOTES" \
+              --prerelease --target "${GITHUB_SHA}"
+          fi
