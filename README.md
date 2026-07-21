@@ -38,7 +38,8 @@ Amazon **Fire Max 11 (第3世代 / Fire OS 8.3.3.8 = Android 11 / API 30)** 向�
 
 ## ビルド手順（WSL2 / CLI）
 
-> 本リポジトリには Gradle Wrapper の jar は含まれていない。手順 4 の `gradle wrapper` で生成する。
+> Gradle Wrapper（`gradlew` / `gradle/wrapper/gradle-wrapper.jar`）はリポジトリに同梱済み。
+> SDK さえ用意すれば `./gradlew assembleDebug` だけでビルドできる（`./gradlew` が Gradle 9.3.1 を自動取得する）。
 
 ### 1. JDK 17 を用意
 
@@ -74,18 +75,13 @@ export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-
 # JDK B ルートを使った場合は JAVA_HOME / PATH も併せて追記する
 ```
 
-### 4. SDK パッケージ導入 + Gradle Wrapper 生成
+### 4. SDK パッケージ導入
 ```bash
 yes | sdkmanager --licenses
 sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
-
-# Gradle 9.3.1 を取得して wrapper を生成（gradlew / gradle-wrapper.jar が作られる）
-cd ~/opt
-wget https://services.gradle.org/distributions/gradle-9.3.1-bin.zip
-unzip -q gradle-9.3.1-bin.zip
-cd /home/shimasan0x00/products/VolNotch
-~/opt/gradle-9.3.1/bin/gradle wrapper --gradle-version 9.3.1 --distribution-type bin
 ```
+
+> Wrapper は同梱済みのため、以前必要だった `gradle wrapper` による生成手順は不要になった。
 
 ### 5. SDK の場所を Gradle に伝える（どちらか一方）
 ```bash
@@ -120,10 +116,15 @@ WSL2 は USB を直接認識しないため、`adb` で直結できない点に�
 ---
 
 ## 使い方
+### 粗調整
 1. アプリを起動すると、選択中ストリーム（既定=メディア）の現在音量が表示される。
 2. Spinner で対象ストリームを切り替えられる。
 3. SeekBar を 1 刻みで動かす / 「−1」「+1」 / 「音量を 1 にする」で調整。
 4. 物理ボタンや他アプリで音量が変わっても UI が自動で追従する。
 
-> メモ: 端末の最大インデックスが小さい（例: 15）場合、「1」でもそれなりに音が出ることがある。
+### 全体の微調整（さらに小さく）
+5. 画面下部の「全体の微調整」スライダー / 「−1 dB」「+1 dB」 / 「0 dB に戻す」で、出力全体を dB 単位で減衰させる（index=1 でも大きいときに使う）。
+6. 減衰中は通知「VolNotch 全体減衰: −X dB」が常駐し、他アプリ使用中や本アプリを閉じても維持される。通知の「解除」または「0 dB に戻す」で停止。
+
+> メモ: Fire Max 11 のメディア最大インデックスは 25 のため、「1」でもそれなりに音が出る。より静かにしたいときは「全体の微調整」を併用する。
 > 着信音 / 通知を 0 にする操作は、端末により通知ポリシー(DND)アクセスが必要で無視されることがある。
