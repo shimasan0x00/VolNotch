@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VolNotch</string>
+    <string name="stream_label">対象ストリーム</string>
+    <string name="volume_placeholder">音量: - / -</string>
+    <string name="minus_one">−1</string>
+    <string name="plus_one">+1</string>
+    <string name="set_to_one">音量を 1 にする</string>
+
+    <!-- 全体の微調整（DynamicsProcessing による出力全体の減衰） -->
+    <string name="fine_section">全体の微調整（他アプリ含む・dB）</string>
+    <string name="fine_placeholder">全体の微調整: 0 dB</string>
+    <string name="fine_value">全体の微調整: %1$d dB</string>
+    <string name="fine_minus">−1 dB（小さく）</string>
+    <string name="fine_plus">+1 dB（大きく）</string>
+    <string name="fine_reset">0 dB に戻す</string>
+    <string name="effect_ok">全体微調整: 利用可能</string>
+    <string name="effect_unavailable">全体微調整: この端末では使用できません</string>
+    <string name="effect_error">全体微調整エラー: %1$s</string>
+
+    <!-- 前面サービスの通知 -->
+    <string name="channel_name">全体減衰</string>
+    <string name="notif_title">VolNotch 全体減衰</string>
+    <string name="notif_text">全体を %1$d dB 減衰中</string>
+    <string name="notif_stop">解除</string>
+</resources>
