@@ -30,3 +30,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
+
+dependencies {
+    // 端末非依存の純粋ロジック（VolumeMath）を JVM 上で検証する plain JUnit。
+    testImplementation("junit:junit:4.13.2")
+}
