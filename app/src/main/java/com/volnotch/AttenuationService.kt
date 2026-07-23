@@ -23,8 +23,8 @@ import android.os.IBinder
 class AttenuationService : Service() {
 
     companion object {
-        // 微調整のスケール（MainActivity と共有する単一の定義）
-        const val FINE_MAX = 40        // 値=FINE_MAX が 0 dB（減衰なし）
+        // 微調整のスケール（純粋ロジック側の単一定義を参照＝二重管理を解消）
+        const val FINE_MAX = VolumeMath.FINE_MAX  // 値=FINE_MAX が 0 dB（減衰なし）
         const val PREFS = "volnotch"
         const val KEY_FINE = "fine_value"
 

@@ -142,7 +142,7 @@ class MainActivity : Activity() {
     /** index を 0..max にクランプして設定し、実値を読み直して UI 同期する。 */
     private fun applyVolume(index: Int) {
         val max = audio.getStreamMaxVolume(currentStream)
-        val clamped = index.coerceIn(0, max)
+        val clamped = VolumeMath.coerceVolumeIndex(index, max)
         try {
             audio.setStreamVolume(currentStream, clamped, 0)
         } catch (e: SecurityException) {
@@ -219,7 +219,7 @@ class MainActivity : Activity() {
         fineValue = v
         prefs.edit().putInt(AttenuationService.KEY_FINE, v).apply()
 
-        val gainDb = (v - fineMax).toFloat()
+        val gainDb = VolumeMath.fineToGainDb(v, fineMax)
         if (effectAvailable) {
             if (gainDb < 0f) {
                 AttenuationService.start(this, gainDb)
@@ -243,7 +243,7 @@ class MainActivity : Activity() {
     }
 
     private fun updateFineLabel() {
-        val gainDb = fineValue - fineMax  // 0 または負
+        val gainDb = VolumeMath.fineToGainDb(fineValue, fineMax).toInt()  // 0 または負
         fineLabel.text = getString(R.string.fine_value, gainDb)
     }
 
