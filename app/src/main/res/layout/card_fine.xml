@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  全体の微調整（DynamicsProcessing で出力全体を dB 減衰）のカード。
+  effectStatus は端末が非対応のときだけ表示する警告行で、既定は gone。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.VolNotch.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fine_section"
+        android:textAppearance="@style/TextAppearance.VolNotch.CardTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/fine_caption"
+        android:textAppearance="@style/TextAppearance.VolNotch.Tagline" />
+
+    <TextView
+        android:id="@+id/effectStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/warning_surface"
+        android:padding="12dp"
+        android:text="@string/effect_unavailable"
+        android:textAppearance="@style/TextAppearance.VolNotch.Warning"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/fineMinusButton"
+            style="@style/Widget.VolNotch.CircleButton"
+            android:layout_width="@dimen/circle_button_size"
+            android:layout_height="@dimen/circle_button_size"
+            android:contentDescription="@string/cd_fine_minus"
+            android:text="@string/fine_minus" />
+
+        <LinearLayout
+            android:id="@+id/fineValueBlock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fineValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fine_placeholder"
+                android:textAppearance="@style/TextAppearance.VolNotch.Value" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:paddingEnd="0dp"
+                android:text="@string/unit_db"
+                android:textAppearance="@style/TextAppearance.VolNotch.Unit" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/finePlusButton"
+            style="@style/Widget.VolNotch.CircleButton"
+            android:layout_width="@dimen/circle_button_size"
+            android:layout_height="@dimen/circle_button_size"
+            android:contentDescription="@string/cd_fine_plus"
+            android:text="@string/fine_plus" />
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/fineSeekBar"
+        style="@style/Widget.VolNotch.SeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp" />
+
+    <Button
+        android:id="@+id/fineResetButton"
+        style="@style/Widget.VolNotch.PillButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pill_height"
+        android:layout_marginTop="8dp"
+        android:text="@string/fine_reset" />
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ストリーム切替セグメント 1 個分。表示名は MainActivity の streams リストが唯一の定義なので、
+  この XML には文字列を持たせず、コードから 5 回インフレートして text を入れる。
+-->
+<RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.VolNotch.Segment"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/segment_height"
+    android:layout_weight="1" />

@@ -1,4 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ライト配色のトークン。values-night/colors.xml に「同じ名前で」暗い値を定義してあるため、
+  drawable / style 側は @color/... を参照するだけでダークモードに追従する
+  （drawable を night 用に複製しないための構成）。
+  色相はランチャーアイコン背景 #8BC4B1 のティールから引いている。
+-->
 <resources>
+    <!-- 面 -->
+    <color name="surface">#F6F9F8</color>
+    <color name="surface_container">#FFFFFF</color>
+    <color name="outline">#D5E0DD</color>
+
+    <!-- 文字 -->
+    <color name="on_surface">#17201E</color>
+    <color name="on_surface_variant">#5B6866</color>
+
+    <!-- アクセント -->
+    <color name="primary">#16776B</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#CCE8E1</color>
+    <color name="on_primary_container">#00332C</color>
+    <color name="ripple">#1F16776B</color>
+
+    <!-- SeekBar の未到達部・セグメントの台座 -->
+    <color name="track_inactive">#DCE6E3</color>
+
+    <!-- 「この端末では使用できません」の警告行 -->
+    <color name="warning">#8B4A1F</color>
+    <color name="warning_container">#FFE6D4</color>
+
+    <!-- 微調整が非対応の端末で無効化されたコントロール -->
+    <color name="disabled_container">#E9EDEC</color>
+    <color name="disabled_content">#A3ADAB</color>
+
+    <!-- ランチャーアイコン用（アイコンの見た目を変えないため据え置き） -->
     <color name="ic_launcher_background">#8BC4B1</color>
 </resources>

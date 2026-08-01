@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  「音量を 1 にする」「0 dB に戻す」用のアウトラインピル。
+  円形 ± を主役に見せるため、こちらは塗らず枠線だけにして階層を下げている。
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/ripple">
+
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFFFF" />
+            <corners android:radius="@dimen/pill_radius" />
+        </shape>
+    </item>
+
+    <item>
+        <selector>
+            <item android:state_enabled="false">
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <corners android:radius="@dimen/pill_radius" />
+                    <stroke
+                        android:width="1.5dp"
+                        android:color="@color/disabled_container" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <corners android:radius="@dimen/pill_radius" />
+                    <stroke
+                        android:width="1.5dp"
+                        android:color="@color/outline" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SeekBar の progress とつまみの色。
+  カスタム drawable を使うと framework は無効時の減光をしてくれないため、
+  ColorStateList 側で state_enabled を持たせて無効状態を表現する。
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/disabled_content" android:state_enabled="false" />
+    <item android:color="@color/primary" />
+</selector>

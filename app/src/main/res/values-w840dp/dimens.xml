@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      840dp 以上（Fire Max 11 は縦 901dp / 横 1502dp でどちらも該当）はさらに内側へ寄せる。
+      2 カラムへの切り替えは別軸で、layout-w960dp が担当する。
+    -->
+    <dimen name="content_side_padding">64dp</dimen>
+</resources>

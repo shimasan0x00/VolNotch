@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  粗調整（ストリームインデックスを 1 刻みで設定）のカード。
+  activity_main.xml / layout-w840dp/activity_main.xml の双方から include する。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.VolNotch.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/volumeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.VolNotch.CardTitle" />
+
+    <!-- card_fine.xml の説明行と 1 行ずつ対応させ、2 カラム時に ± / スライダーの高さを揃える -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/stream_caption"
+        android:textAppearance="@style/TextAppearance.VolNotch.Tagline" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/minusButton"
+            style="@style/Widget.VolNotch.CircleButton"
+            android:layout_width="@dimen/circle_button_size"
+            android:layout_height="@dimen/circle_button_size"
+            android:contentDescription="@string/cd_volume_minus"
+            android:text="@string/minus_one" />
+
+        <!-- 読み上げと uiautomator 用に、この行へ「メディア音量: 7 / 25」を contentDescription で入れる -->
+        <LinearLayout
+            android:id="@+id/volumeValueBlock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/volumeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/volume_placeholder"
+                android:textAppearance="@style/TextAppearance.VolNotch.Value" />
+
+            <TextView
+                android:id="@+id/volumeMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:paddingEnd="0dp"
+                android:text="@string/volume_max_placeholder"
+                android:textAppearance="@style/TextAppearance.VolNotch.Unit" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/plusButton"
+            style="@style/Widget.VolNotch.CircleButton"
+            android:layout_width="@dimen/circle_button_size"
+            android:layout_height="@dimen/circle_button_size"
+            android:contentDescription="@string/cd_volume_plus"
+            android:text="@string/plus_one" />
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/volumeSeekBar"
+        style="@style/Widget.VolNotch.SeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp" />
+
+    <Button
+        android:id="@+id/setOneButton"
+        style="@style/Widget.VolNotch.PillButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pill_height"
+        android:layout_marginTop="8dp"
+        android:text="@string/set_to_one" />
+</LinearLayout>

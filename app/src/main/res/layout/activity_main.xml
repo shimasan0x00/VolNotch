@@ -1,143 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  1 カラム（スマホ / タブレット縦持ち）。840dp 以上では layout-w840dp/activity_main.xml が
+  同じ include を 2 カラムに並べ替える。カードの中身はどちらも同一ファイルを共有する。
+  clipToPadding=false はカードの elevation の影を padding 領域に描かせるため。
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:text="@string/app_name"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="@string/stream_label" />
-
-    <Spinner
-        android:id="@+id/streamSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/volumeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="24dp"
-        android:paddingBottom="8dp"
-        android:text="@string/volume_placeholder"
-        android:textSize="18sp" />
-
-    <SeekBar
-        android:id="@+id/volumeSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="16dp" />
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingStart="@dimen/content_side_padding"
+    android:paddingTop="@dimen/content_vertical_padding"
+    android:paddingEnd="@dimen/content_side_padding"
+    android:paddingBottom="@dimen/content_vertical_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="12dp">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/minusButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/minus_one" />
+        <include
+            layout="@layout/app_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/plusButton"
-            android:layout_width="0dp"
+        <include
+            layout="@layout/card_stream"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/plus_one" />
+            android:layout_marginTop="@dimen/card_spacing" />
+
+        <include
+            layout="@layout/card_fine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_spacing" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/setOneButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/set_to_one" />
-
-    <!-- ここから: 全体の微調整（出力全体を dB で減衰） -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
-        android:background="#33000000" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fine_section"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/effectStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="4dp"
-        android:text="@string/effect_ok"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/fineLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="8dp"
-        android:text="@string/fine_placeholder"
-        android:textSize="18sp" />
-
-    <SeekBar
-        android:id="@+id/fineSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="16dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="12dp">
-
-        <Button
-            android:id="@+id/fineMinusButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAllCaps="false"
-            android:text="@string/fine_minus" />
-
-        <Button
-            android:id="@+id/finePlusButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAllCaps="false"
-            android:text="@string/fine_plus" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/fineResetButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="@string/fine_reset" />
-
-</LinearLayout>
 </ScrollView>
