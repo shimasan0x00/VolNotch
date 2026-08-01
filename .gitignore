@@ -18,3 +18,8 @@
 
 # 実機接続手順は個人環境依存（IP アドレス・ローカルパス）のため追跡しない。
 /DEVICE.md
+
+# 署名鍵と鍵情報は絶対にコミットしない。
+*.jks
+*.keystore
+/keystore.properties
