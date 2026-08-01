@@ -3,7 +3,7 @@
 WSL2 上で `sudo` が使える環境向けの、環境構築 → ビルドまでのコピペ手順。
 `sudo` が使えない場合は [README.md](README.md) の「JDK 17 を用意 → B.ポータブル JDK」を参照。
 
-検証済みバージョン: AGP 9.1.1 / Gradle 9.3.1 / JDK 17 / build-tools 36.0.0 / compileSdk 36 / min・targetSdk 30。
+検証済みバージョン: AGP 9.1.1 / Gradle 9.3.1 / JDK 17 / build-tools 36.0.0 / compileSdk 36 / minSdk 28 / targetSdk 30。
 （AGP 9.1.1 は Gradle 9.3.1 以上が必須。）
 
 ---
