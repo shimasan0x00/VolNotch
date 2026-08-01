@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ライト / ダーク共通のスタイル。色はすべて @color/... 参照なので、
+  このファイルを night 用に複製する必要はない。
+  ドット付きの名前は暗黙の親解決が働くため、親を持たないものは parent="" を明示する。
+-->
+<resources>
+
+    <!-- ==== 文字 ============================================================ -->
+
+    <style name="TextAppearance.VolNotch.Headline" parent="">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.VolNotch.Tagline" parent="">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/on_surface_variant</item>
+    </style>
+
+    <style name="TextAppearance.VolNotch.CardTitle" parent="">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/on_surface</item>
+    </style>
+
+    <!-- 現在値の大きな数字。tnum で等幅数字にし、7→8 や 10→9 で桁幅が揺れないようにする。 -->
+    <style name="TextAppearance.VolNotch.Value" parent="">
+        <item name="android:textSize">44sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <style name="TextAppearance.VolNotch.Unit" parent="">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/on_surface_variant</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <style name="TextAppearance.VolNotch.Warning" parent="">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/warning</item>
+    </style>
+
+    <!-- ==== ウィジェット ==================================================== -->
+
+    <style name="Widget.VolNotch.Card" parent="">
+        <item name="android:background">@drawable/card_surface</item>
+        <item name="android:elevation">@dimen/card_elevation</item>
+        <item name="android:padding">@dimen/card_padding</item>
+    </style>
+
+    <!-- Spinner を置き換えるセグメント 1 個分。 -->
+    <style name="Widget.VolNotch.Segment" parent="@android:style/Widget.Material.CompoundButton.RadioButton">
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/segment_item_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/segment_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+    <style name="Widget.VolNotch.SeekBar" parent="@android:style/Widget.Material.SeekBar">
+        <item name="android:progressDrawable">@drawable/seekbar_progress</item>
+        <item name="android:thumb">@drawable/seekbar_thumb</item>
+        <item name="android:splitTrack">false</item>
+        <item name="android:minHeight">@dimen/seekbar_height</item>
+        <item name="android:maxHeight">@dimen/seekbar_height</item>
+        <!-- つまみ（28dp）の半分を左右に確保して端で欠けないようにする -->
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <!-- トラックは細いのでタップ判定を上下に広げる -->
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+    </style>
+
+    <!--
+      円形の ±1 ボタン。framework の Button は minWidth 88dp と
+      押下時の elevation アニメーションを持っているので、どちらも打ち消す。
+    -->
+    <style name="Widget.VolNotch.CircleButton" parent="@android:style/Widget.Material.Button">
+        <item name="android:background">@drawable/btn_circle_tonal</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/circle_btn_text</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Widget.VolNotch.PillButton" parent="@android:style/Widget.Material.Button">
+        <item name="android:background">@drawable/btn_pill_outlined</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/btn_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+    </style>
+</resources>

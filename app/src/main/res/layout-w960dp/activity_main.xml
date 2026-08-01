@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  2 カラム。1 カラムのままだとボタンが画面幅いっぱいに伸び、下 1/3 が空くため、
+  カードを横に並べて操作対象を親指の届く範囲に収める。カードの中身は 1 カラム版と同じ include。
+  カード 2 枚に layout_height=match_parent を指定し、高さを揃えている。
+
+  閾値が 960dp なのは Fire Max 11（213dpi）の実測に合わせたため:
+  縦 1200px = 901dp → 1 カラム / 横 2000px = 1502dp → 2 カラム。
+  840dp だと縦持ちでも 2 カラムになり、カードが窮屈になる。
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingStart="@dimen/content_side_padding"
+    android:paddingTop="@dimen/content_vertical_padding"
+    android:paddingEnd="@dimen/content_side_padding"
+    android:paddingBottom="@dimen/content_vertical_padding">
+
+    <!-- 2 カラムだと内容が縦に余るので、fillViewport と併せて縦中央に寄せる。 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/app_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_spacing"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <include
+                layout="@layout/card_stream"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <include
+                layout="@layout/card_fine"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/card_spacing"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

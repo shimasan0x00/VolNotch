@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- セグメント全体の台座。この上に選択中の 1 つだけが primary_container で乗る。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/track_inactive" />
+    <corners android:radius="@dimen/segment_radius" />
+</shape>

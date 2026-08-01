@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 微調整が使えない端末でだけ出る警告行の背景。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/warning_container" />
+    <corners android:radius="@dimen/warning_radius" />
+</shape>

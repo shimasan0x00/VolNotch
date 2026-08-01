@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 円形 ± ボタンの文字色。微調整非対応の端末では無効色になる。 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/disabled_content" android:state_enabled="false" />
+    <item android:color="@color/on_primary_container" />
+</selector>

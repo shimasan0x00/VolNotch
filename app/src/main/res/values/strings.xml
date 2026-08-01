@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">VolNotch</string>
+    <string name="app_tagline">ハードウェアの刻みより細かく音量を絞る</string>
+
+    <!-- ストリーム切替（セグメント）。ラベルは画面に出さず TalkBack 用に使う。 -->
     <string name="stream_label">対象ストリーム</string>
-    <string name="volume_placeholder">音量: - / -</string>
-    <string name="minus_one">−1</string>
-    <string name="plus_one">+1</string>
+
+    <!-- 粗調整（ストリームインデックス） -->
+    <string name="stream_volume_title">%1$s音量</string>
+    <!-- 2 カラム時に微調整カードと行位置を揃えるため、あちらの説明行と 1 行ずつ対応させる -->
+    <string name="stream_caption">端末の音量インデックスを 1 刻みで設定</string>
+    <string name="volume_placeholder">–</string>
+    <string name="volume_max_placeholder">/ –</string>
+    <string name="volume_of_max">/ %1$d</string>
+    <!-- 表示は数値と単位に分かれるので、読み上げと uiautomator 用に 1 文にしたもの -->
+    <string name="volume_value_a11y">%1$s音量: %2$d / %3$d</string>
+    <string name="minus_one">−</string>
+    <string name="plus_one">+</string>
     <string name="set_to_one">音量を 1 にする</string>
+    <string name="cd_volume_minus">音量を 1 下げる</string>
+    <string name="cd_volume_plus">音量を 1 上げる</string>
 
     <!-- 全体の微調整（DynamicsProcessing による出力全体の減衰） -->
-    <string name="fine_section">全体の微調整（他アプリ含む・dB）</string>
-    <string name="fine_placeholder">全体の微調整: 0 dB</string>
+    <string name="fine_section">全体の微調整</string>
+    <string name="fine_caption">他アプリを含む出力全体を dB で減衰</string>
+    <string name="fine_placeholder">0</string>
+    <string name="unit_db">dB</string>
     <string name="fine_value">全体の微調整: %1$d dB</string>
-    <string name="fine_minus">−1 dB（小さく）</string>
-    <string name="fine_plus">+1 dB（大きく）</string>
+    <string name="fine_minus">−</string>
+    <string name="fine_plus">+</string>
     <string name="fine_reset">0 dB に戻す</string>
+    <string name="cd_fine_minus">全体の微調整を 1 dB 下げる</string>
+    <string name="cd_fine_plus">全体の微調整を 1 dB 上げる</string>
     <string name="effect_ok">全体微調整: 利用可能</string>
-    <string name="effect_unavailable">全体微調整: この端末では使用できません</string>
+    <string name="effect_unavailable">この端末では全体の微調整を使用できません</string>
     <string name="effect_error">全体微調整エラー: %1$s</string>
 
     <!-- 前面サービスの通知 -->

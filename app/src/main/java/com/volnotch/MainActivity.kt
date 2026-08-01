@@ -14,11 +14,10 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.SeekBar
-import android.widget.Spinner
 import android.widget.TextView
 
 /**
@@ -40,6 +39,7 @@ class MainActivity : Activity() {
     private lateinit var prefs: SharedPreferences
 
     // 表示名 -> AudioManager のストリーム種別。先頭（メディア）を既定選択にする。
+    // 切替セグメントもこのリストから生成するため、ストリームの定義はここだけにある。
     private val streams = listOf(
         "メディア" to AudioManager.STREAM_MUSIC,
         "着信音" to AudioManager.STREAM_RING,
@@ -50,13 +50,17 @@ class MainActivity : Activity() {
     private var currentStream: Int = AudioManager.STREAM_MUSIC
 
     // 粗調整（ストリームインデックス）
-    private lateinit var streamSpinner: Spinner
-    private lateinit var volumeLabel: TextView
+    private lateinit var streamSegments: RadioGroup
+    private lateinit var volumeTitle: TextView
+    private lateinit var volumeValueBlock: View
+    private lateinit var volumeValue: TextView
+    private lateinit var volumeMax: TextView
     private lateinit var seekBar: SeekBar
 
     // 微調整（全体減衰）
     private lateinit var effectStatus: TextView
-    private lateinit var fineLabel: TextView
+    private lateinit var fineValueBlock: View
+    private lateinit var fineValueText: TextView
     private lateinit var fineSeekBar: SeekBar
     private var effectAvailable = false
     private var fineValue: Int = AttenuationService.FINE_MAX  // FINE_MAX = 0 dB（減衰なし）
@@ -87,11 +91,15 @@ class MainActivity : Activity() {
         audio = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         prefs = getSharedPreferences(AttenuationService.PREFS, Context.MODE_PRIVATE)
 
-        streamSpinner = findViewById(R.id.streamSpinner)
-        volumeLabel = findViewById(R.id.volumeLabel)
+        streamSegments = findViewById(R.id.streamSegments)
+        volumeTitle = findViewById(R.id.volumeTitle)
+        volumeValueBlock = findViewById(R.id.volumeValueBlock)
+        volumeValue = findViewById(R.id.volumeValue)
+        volumeMax = findViewById(R.id.volumeMax)
         seekBar = findViewById(R.id.volumeSeekBar)
         effectStatus = findViewById(R.id.effectStatus)
-        fineLabel = findViewById(R.id.fineLabel)
+        fineValueBlock = findViewById(R.id.fineValueBlock)
+        fineValueText = findViewById(R.id.fineValue)
         fineSeekBar = findViewById(R.id.fineSeekBar)
 
         setupStreamControls()
@@ -101,20 +109,23 @@ class MainActivity : Activity() {
     // ---- 粗調整（ストリームインデックス） ------------------------------------
 
     private fun setupStreamControls() {
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            streams.map { it.first }
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        streamSpinner.adapter = adapter
-        streamSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        // セグメントは [streams] から生成する（XML にストリーム名を複製しない）。
+        // id 未設定の子は RadioGroup が追加時に自動採番するため、こちらでは付けない。
+        streams.forEach { (name, _) ->
+            val segment = layoutInflater
+                .inflate(R.layout.item_stream_segment, streamSegments, false) as RadioButton
+            segment.text = name
+            streamSegments.addView(segment)
+        }
+        // 既定は currentStream と同じ先頭（メディア）。リスナ登録前に選んでおく。
+        (streamSegments.getChildAt(0) as RadioButton).isChecked = true
+        streamSegments.contentDescription = getString(R.string.stream_label)
+        streamSegments.setOnCheckedChangeListener { group, checkedId ->
+            val position = group.indexOfChild(group.findViewById<View>(checkedId))
+            if (position >= 0) {
                 currentStream = streams[position].second
                 syncUiFromSystem()
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         // SeekBar は整数 = 1 刻み。ユーザー操作のときだけ音量へ反映する
@@ -137,6 +148,8 @@ class MainActivity : Activity() {
         findViewById<Button>(R.id.setOneButton).setOnClickListener {
             applyVolume(1)
         }
+
+        syncUiFromSystem()
     }
 
     /** index を 0..max にクランプして設定し、実値を読み直して UI 同期する。 */
@@ -152,12 +165,17 @@ class MainActivity : Activity() {
         syncUiFromSystem()
     }
 
-    /** 現在のストリームの実値を UI（ラベル / SeekBar）へ反映する。 */
+    /** 現在のストリームの実値を UI（見出し / 数値 / SeekBar）へ反映する。 */
     private fun syncUiFromSystem() {
         val max = audio.getStreamMaxVolume(currentStream)
         val cur = audio.getStreamVolume(currentStream)
         val name = streams.first { it.second == currentStream }.first
-        volumeLabel.text = "${name}音量: $cur / $max"
+        volumeTitle.text = getString(R.string.stream_volume_title, name)
+        volumeValue.text = cur.toString()
+        volumeMax.text = getString(R.string.volume_of_max, max)
+        // 表示が数値と単位に分かれているので、読み上げと uiautomator 用に 1 文を持たせる。
+        volumeValueBlock.contentDescription =
+            getString(R.string.volume_value_a11y, name, cur, max)
         if (seekBar.max != max) seekBar.max = max
         if (seekBar.progress != cur) seekBar.progress = cur
     }
@@ -173,11 +191,8 @@ class MainActivity : Activity() {
             false
         }
 
-        effectStatus.text = if (effectAvailable) {
-            getString(R.string.effect_ok)
-        } else {
-            getString(R.string.effect_unavailable)
-        }
+        // 使えるのが当たり前なので、成功時は何も出さず、非対応のときだけ警告行を出す。
+        effectStatus.visibility = if (effectAvailable) View.GONE else View.VISIBLE
 
         fineValue = prefs.getInt(AttenuationService.KEY_FINE, fineMax).coerceIn(0, fineMax)
         fineSeekBar.max = fineMax
@@ -244,7 +259,9 @@ class MainActivity : Activity() {
 
     private fun updateFineLabel() {
         val gainDb = VolumeMath.fineToGainDb(fineValue, fineMax).toInt()  // 0 または負
-        fineLabel.text = getString(R.string.fine_value, gainDb)
+        // 数字とハイフンが並ぶと読みにくいので、表示にはマイナス記号 U+2212 を使う。
+        fineValueText.text = if (gainDb < 0) "−${-gainDb}" else gainDb.toString()
+        fineValueBlock.contentDescription = getString(R.string.fine_value, gainDb)
     }
 
     // ---- ライフサイクル ------------------------------------------------------

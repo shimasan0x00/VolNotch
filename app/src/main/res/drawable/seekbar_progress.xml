@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  太くて角丸のトラック。progress 側は <scale> で包む（ProgressBar が level 0..10000 を
+  幅にマッピングする）。<clip> と違い両端の丸みが残るため、M3 に近い見え方になる。
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/track_inactive" />
+            <corners android:radius="@dimen/seekbar_radius" />
+            <size android:height="@dimen/seekbar_height" />
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <scale android:scaleWidth="100%">
+            <shape android:shape="rectangle">
+                <solid android:color="@color/seekbar_active" />
+                <corners android:radius="@dimen/seekbar_radius" />
+                <size android:height="@dimen/seekbar_height" />
+            </shape>
+        </scale>
+    </item>
+</layer-list>

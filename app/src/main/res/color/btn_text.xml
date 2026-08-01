@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ピル型ボタン（「音量を 1 にする」「0 dB に戻す」）の文字色。 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/disabled_content" android:state_enabled="false" />
+    <item android:color="@color/primary" />
+</selector>
