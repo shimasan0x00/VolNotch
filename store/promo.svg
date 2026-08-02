@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+  <!--
+    Amazon Appstore プロモーション画像（1024x500）の原本。
+    配色は app/src/main/res/values-night/colors.xml のトークンをそのまま使う
+    （プロモが製品と別の配色だと同一アプリに見えないため）。
+      surface #0F1614 / surface_container #182120 / on_surface #E2E8E6
+      on_surface_variant #B4C0BD / primary #7ED0BE / track_inactive #2C3735
+      ic_launcher_background #8BC4B1
+
+    図はアプリの主張そのもの。端末の粗い目盛り（0〜5）の最初の 1 区間だけを
+    surface_container の帯で囲み、その中に VolNotch の細かい目盛りを primary で入れている。
+    右へ行くほど目盛りを薄くして端で断ち切ることで、視線を「静かな側」＝本アプリが効く
+    範囲に戻している。
+  -->
+  <rect width="1024" height="500" fill="#0F1614"/>
+
+  <!-- アイコンチップ。ic_launcher の中央 72 相当を 96 に拡大（96/72 = 1.33333） -->
+  <rect x="72" y="88" width="96" height="96" rx="21" fill="#8BC4B1"/>
+  <g transform="translate(48,64) scale(1.33333)">
+    <g stroke="#0F1614" stroke-width="4" stroke-linecap="round" fill="none">
+      <line x1="44" y1="30" x2="44" y2="78"/>
+      <line x1="60" y1="32" x2="76" y2="32"/>
+      <line x1="60" y1="50" x2="76" y2="50"/>
+      <line x1="60" y1="60" x2="70" y2="60"/>
+      <line x1="60" y1="70" x2="70" y2="70"/>
+    </g>
+    <rect x="32" y="60" width="24" height="11" rx="5.5" fill="#0F1614"/>
+  </g>
+
+  <!-- ワードマークとタグライン -->
+  <text x="200" y="139" font-family="Noto Sans CJK JP" font-size="60" font-weight="700"
+        fill="#E2E8E6" letter-spacing="-1">VolNotch</text>
+  <text x="203" y="177" font-family="Noto Sans CJK JP" font-size="22" font-weight="400"
+        fill="#B4C0BD" letter-spacing="2.5">ハードウェアの刻みより細かく音量を絞る</text>
+
+  <!-- 音量ルーラー -->
+  <g>
+    <!-- 最初の 1 区間を囲む帯。ここが VolNotch の働く場所 -->
+    <rect x="60" y="288" width="184" height="84" rx="10" fill="#182120"/>
+
+    <!-- 台座。右端まで届かせて「まだ続く」ことを示す -->
+    <rect x="72" y="328" width="952" height="4" rx="2" fill="#2C3735"/>
+
+    <!-- 端末の粗い目盛り（160px 間隔）。右へ行くほど薄くして視線を左へ戻す -->
+    <g fill="#6E7C78">
+      <rect x="70" y="304" width="5" height="52" rx="2.5"/>
+      <rect x="230" y="304" width="5" height="52" rx="2.5" opacity="0.9"/>
+      <rect x="390" y="304" width="5" height="52" rx="2.5" opacity="0.72"/>
+      <rect x="550" y="304" width="5" height="52" rx="2.5" opacity="0.55"/>
+      <rect x="710" y="304" width="5" height="52" rx="2.5" opacity="0.4"/>
+      <rect x="870" y="304" width="5" height="52" rx="2.5" opacity="0.26"/>
+    </g>
+
+    <!-- VolNotch が刻む細かい目盛り。最初の 1 区間の中だけに入れる -->
+    <g fill="#7ED0BE">
+      <rect x="90" y="315" width="3" height="30" rx="1.5"/>
+      <rect x="110" y="315" width="3" height="30" rx="1.5"/>
+      <rect x="130" y="315" width="3" height="30" rx="1.5"/>
+      <rect x="150" y="315" width="3" height="30" rx="1.5"/>
+      <rect x="170" y="315" width="3" height="30" rx="1.5"/>
+      <rect x="190" y="315" width="3" height="30" rx="1.5"/>
+      <rect x="210" y="315" width="3" height="30" rx="1.5"/>
+    </g>
+
+    <!-- 粗い目盛りの番号。これが端末の音量段階であることを示す -->
+    <g font-family="Noto Sans CJK JP" font-size="18" font-weight="400" fill="#8A9794"
+       text-anchor="middle">
+      <text x="72" y="396">0</text>
+      <text x="232" y="396">1</text>
+      <text x="392" y="396" opacity="0.72">2</text>
+      <text x="552" y="396" opacity="0.55">3</text>
+      <text x="712" y="396" opacity="0.4">4</text>
+      <text x="872" y="396" opacity="0.26">5</text>
+    </g>
+  </g>
+</svg>

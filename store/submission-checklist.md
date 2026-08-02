@@ -28,7 +28,11 @@ Developer Console（https://developer.amazon.com/apps-and-games/console）での
 
 - [ ] **Supported Devices:** Fire タブレットのみを選択（Fire TV / Automotive は外す）
 - [ ] **Availability:** 日本を含む配信国を選択
-- [ ] **Target Audience & Content Rating:** 対象年齢を全年齢向けとし、コンテンツ質問票（暴力・薬物・ヌード・ギャンブル等）にすべて「なし」で回答
+- [ ] **Target Audience & Content Rating:**
+      - 対象年齢は **13 歳以上／一般向け**を選び、**子ども向け（child-directed）とは申告しない**
+        ⚠️ 13 歳未満を含む年齢層を選ぶと Amazon の **Child-Directed App Policy** が適用され、
+        追加の要件・審査が発生する。本アプリは子ども向けに作られた端末ツールではないため該当しない
+      - コンテンツ質問票（暴力・薬物・ヌード・ギャンブル等）はすべて「なし」で回答
 - [ ] **User Data Privacy:** 「ユーザーデータを収集または第三者に送信するか」→ **No**
       （`INTERNET` 権限なし・外部 SDK なしを確認済み。この場合プライバシーポリシー URL は不要）
 
@@ -36,16 +40,34 @@ Developer Console（https://developer.amazon.com/apps-and-games/console）での
 
 ## 3. Appstore Details
 
-`store/listing-ja.md` から貼り付ける（文字数・バイト数は検証済み）。
+### ロケールは 2 つ入れる
 
-| 項目 | 内容 | 実測 |
+**英語（米国）は「翻訳が無いマーケットプレイスすべてで表示されるフォールバック」であり、
+Amazon の審査担当者が読む欄でもある。ここに日本語を入れてはいけない。**
+
+| ロケール | 原本 | 役割 |
 |---|---|---|
-| 表示名 | `VolNotch` | — |
-| 短い説明 | listing-ja.md より | 424 バイト / 上限 2,000 |
-| 長い説明 | listing-ja.md より | 1,152 文字 / 上限 4,000 |
-| 機能ハイライト | listing-ja.md より | 5 行 / 3〜5 行 |
-| キーワード | listing-ja.md より | 任意項目 |
+| **英語（米国）** | `store/listing-en.md` | 必須。フォールバック。審査担当者が読む |
+| **日本語** を追加 | `store/listing-ja.md` | 日本のユーザーに表示される |
 
+英語版には「UI は日本語のみ」である旨と、**常駐通知による減衰の維持が意図した仕様である**旨を
+明記してある（審査担当者に「音量が戻らない不具合」と誤解されないため）。
+
+### 文字数（検証済み）
+
+| 項目 | 英語（米国） | 日本語 | 上限 |
+|---|---|---|---|
+| 表示名 | `VolNotch` | `VolNotch` | — |
+| 短い説明 | 348 バイト | 424 バイト | 2,000 バイト |
+| 長い説明 | 2,699 文字 | 1,152 文字 | 4,000 文字 |
+| 機能ハイライト | 5 行 | 5 行 | 3〜5 行 |
+| キーワード | 任意 | 任意 | — |
+
+- [ ] **カテゴリ: `Utilities`**（サブカテゴリは `All-in-One Tools`。必須でなければ未指定でも可）
+      Amazon はカテゴリに厳格な要件を課しておらず、主にブラウズツリーと
+      Similar / Related / Recommended の推薦に使われる。`Utilities` 配下には
+      `Battery Savers` / `Task & App Managers` / `Wi-Fi Analyzers` など端末調整ツールが並び、
+      本アプリと同じ層。`Music & Audio` は音楽プレイヤー・配信アプリの枠なので採らない
 - [ ] **価格: 無料**
 - [ ] 大アイコン `store/icon_512.png`（512×512 PNG 透過）
 - [ ] 小アイコン `store/icon_114.png`（114×114 PNG 透過）
@@ -56,7 +78,34 @@ Developer Console（https://developer.amazon.com/apps-and-games/console）での
         この端末ではシステムだけ最大値が 7 で他は 25 のため、最大インデックスを端末・ストリームごとに
         自動取得していることが伝わる）
       - `store/screenshot_04_portrait_light.png`（1200×1920・ライト・縦向き）
-- [ ] プロモ画像（1024×500）は任意 — 初回は省略
+- [ ] プロモ画像（1024×500・PNG）— 任意項目だが用意済み。**1 枚を選んでアップロードする**
+
+      | ファイル | 内容 |
+      |---|---|
+      | `store/volnotch-promo-dark-1024x500.png` | ダーク基調。ワードマーク＋コピー＋バーの階段図＋数値カード |
+      | `store/volnotch-promo-light-1024x500.png` | 上記のライト版 |
+      | `store/promo_1024x500.png` | 別案。アイコン＋目盛りルーラー（原本 `promo.svg`） |
+
+      Amazon のガイダンスは「スクリーンショットではなくアプリのブランディングを見せるもの」。
+      いずれもその方針に沿っている。
+
+      > 画像内の「Fire OS 7 / 8」「Fire タブレット」は対応端末の事実表記。
+      > [Listing and Promotion Policy](https://developer.amazon.com/docs/policy-center/listing-promo.html)
+      > に商標に関する明文の禁止規定はなく、問題ない。ただし**表示名には入れない**方針は維持する。
+
+## 3-2. テスト手順（Testing Instructions）
+
+- [ ] `store/testing-instructions.md` の内容を貼る（**任意項目だが必ず入れる**）
+
+「省略可能」と表示されるが、本アプリは以下 3 点で審査担当者に誤解されやすいため必須と考える。
+
+1. 減衰がアプリ終了後も維持される → 「音量が戻らない不具合」に見える
+2. UI が日本語のみ → どのボタンが何をするか分からない
+3. 審査端末が `DynamicsProcessing` 非対応だと「使用できません」表示になる → 機能不全に見える
+
+英語で記載する（審査担当者が読むため）。約 2,230 文字。入力欄の上限で弾かれた場合は、
+コントロール対応表（Control reference）を削って「EXPECTED BEHAVIOUR, NOT A DEFECT」と
+「IF THE WHOLE-OUTPUT ADJUSTMENT IS NOT SUPPORTED」は必ず残す。
 
 ## 4. 提出前の最終確認
 
@@ -88,6 +137,9 @@ Developer Console（https://developer.amazon.com/apps-and-games/console）での
 # アイコン（原本: store/icon.svg）
 rsvg-convert -w 512 -h 512 -o store/icon_512.png store/icon.svg
 rsvg-convert -w 114 -h 114 -o store/icon_114.png store/icon.svg
+
+# プロモ画像（原本: store/promo.svg。日本語の描画に Noto Sans CJK JP が必要）
+rsvg-convert -w 1024 -h 500 -o store/promo_1024x500.png store/promo.svg
 
 # スクリーンショット（原本: captures/store_*.png。captures/ は Git 管理外）
 convert captures/store_light_landscape.png -resize 1920x1200 \
