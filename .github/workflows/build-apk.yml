@@ -37,16 +37,33 @@ jobs:
           yes | sdkmanager --licenses > /dev/null || true
           sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
-      - name: Build debug APK
+      - name: Decode keystore
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: printf '%s' "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+
+      - name: Build release APK
+        env:
+          VOLNOTCH_STORE_FILE: ${{ runner.temp }}/release.jks
+          VOLNOTCH_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          VOLNOTCH_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          VOLNOTCH_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleRelease --stacktrace
+
+      # signingConfig は鍵が無いと null にフォールバックするため、署名の有無を必ず機械検証する。
+      - name: Verify APK signature
+        run: |
+          set -euo pipefail
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs \
+            app/build/outputs/apk/release/app-release.apk
 
       - name: Upload APK as workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: VolNotch-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: VolNotch-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
 
       - name: Publish release
@@ -54,8 +71,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          SRC="app/build/outputs/apk/debug/app-debug.apk"
-          NOTES="自動ビルドされた debug 署名 APK（サイドロード用）。**完全に自己責任**でご利用ください。作者・提供者は一切の責任を負いません。詳細は README を参照。"
+          SRC="app/build/outputs/apk/release/app-release.apk"
+          NOTES="自動ビルドされた release 署名 APK（サイドロード用）。**完全に自己責任**でご利用ください。作者・提供者は一切の責任を負いません。詳細は README を参照。既に debug 署名版（2026-08 以前のビルド）を入れている場合は、署名が異なるため一度アンインストールしてからインストールしてください。"
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             TAG="${GITHUB_REF_NAME}"
             cp "$SRC" "VolNotch-${TAG}.apk"

@@ -1,7 +1,21 @@
+import java.util.Properties
+
 plugins {
     // AGP 9 の Kotlin ビルトインサポートにより、これ 1 つで Kotlin もコンパイルされる。
     id("com.android.application")
 }
+
+// 署名情報は keystore.properties（Git 管理外）か環境変数（CI）から読む。
+// どちらも無い場合は release を未署名でビルドする（fork / クリーンチェックアウトを壊さないため）。
+val keystoreProps = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
+fun signingValue(propKey: String, envKey: String): String? =
+    keystoreProps.getProperty(propKey) ?: System.getenv(envKey)
+
+val releaseStoreFile: String? = signingValue("storeFile", "VOLNOTCH_STORE_FILE")
 
 android {
     namespace = "com.volnotch"
@@ -15,8 +29,23 @@ android {
         versionName = "1.0"
     }
 
+    signingConfigs {
+        // 鍵が用意されているときだけ "release" を定義する。
+        val storePath = releaseStoreFile
+        if (storePath != null) {
+            create("release") {
+                storeFile = file(storePath)
+                storePassword = signingValue("storePassword", "VOLNOTCH_STORE_PASSWORD")
+                keyAlias = signingValue("keyAlias", "VOLNOTCH_KEY_ALIAS")
+                keyPassword = signingValue("keyPassword", "VOLNOTCH_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            // 鍵が無ければ null ＝ 未署名。CI は apksigner verify で署名を必ず検証する。
+            signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -28,6 +57,14 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    lint {
+        // ExpiredTargetSdkVersion は「Google Play は API 33 以上を要求する」という
+        // Play 専用の要件で、lintVitalRelease が release ビルドを致命的エラーで止める。
+        // 本アプリの配信先は Amazon Appstore とサイドロードのみで Play には出さない。
+        // targetSdk 30 は Amazon の Fire OS 8 向け最小 targetSdk を満たしている。
+        disable += "ExpiredTargetSdkVersion"
     }
 }
 
