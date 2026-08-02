@@ -78,7 +78,11 @@ Amazon の審査担当者が読む欄でもある。ここに日本語を入れ�
         この端末ではシステムだけ最大値が 7 で他は 25 のため、最大インデックスを端末・ストリームごとに
         自動取得していることが伝わる）
       - `store/screenshot_04_portrait_light.png`（1200×1920・ライト・縦向き）
-- [ ] プロモ画像（1024×500）は任意 — 初回は省略
+- [ ] プロモ画像 `store/promo_1024x500.png`（1024×500・PNG）
+      任意項目だが用意済み。Amazon のガイダンスは「スクリーンショットではなくアプリの
+      ブランディングを見せるもの」なので、アイコン＋ワードマーク＋タグラインに、
+      端末の粗い目盛りの 1 区間の中へ VolNotch が細かい目盛りを入れる図を添えている。
+      配色は `values-night/colors.xml` のトークンをそのまま使用（製品と同じ顔にするため）。
 
 ## 4. 提出前の最終確認
 
@@ -110,6 +114,9 @@ Amazon の審査担当者が読む欄でもある。ここに日本語を入れ�
 # アイコン（原本: store/icon.svg）
 rsvg-convert -w 512 -h 512 -o store/icon_512.png store/icon.svg
 rsvg-convert -w 114 -h 114 -o store/icon_114.png store/icon.svg
+
+# プロモ画像（原本: store/promo.svg。日本語の描画に Noto Sans CJK JP が必要）
+rsvg-convert -w 1024 -h 500 -o store/promo_1024x500.png store/promo.svg
 
 # スクリーンショット（原本: captures/store_*.png。captures/ は Git 管理外）
 convert captures/store_light_landscape.png -resize 1920x1200 \
