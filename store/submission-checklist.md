@@ -93,6 +93,20 @@ Amazon の審査担当者が読む欄でもある。ここに日本語を入れ�
       > [Listing and Promotion Policy](https://developer.amazon.com/docs/policy-center/listing-promo.html)
       > に商標に関する明文の禁止規定はなく、問題ない。ただし**表示名には入れない**方針は維持する。
 
+## 3-2. テスト手順（Testing Instructions）
+
+- [ ] `store/testing-instructions.md` の内容を貼る（**任意項目だが必ず入れる**）
+
+「省略可能」と表示されるが、本アプリは以下 3 点で審査担当者に誤解されやすいため必須と考える。
+
+1. 減衰がアプリ終了後も維持される → 「音量が戻らない不具合」に見える
+2. UI が日本語のみ → どのボタンが何をするか分からない
+3. 審査端末が `DynamicsProcessing` 非対応だと「使用できません」表示になる → 機能不全に見える
+
+英語で記載する（審査担当者が読むため）。約 2,230 文字。入力欄の上限で弾かれた場合は、
+コントロール対応表（Control reference）を削って「EXPECTED BEHAVIOUR, NOT A DEFECT」と
+「IF THE WHOLE-OUTPUT ADJUSTMENT IS NOT SUPPORTED」は必ず残す。
+
 ## 4. 提出前の最終確認
 
 - [ ] 実機（Fire Max 11 / Fire OS 8）で release APK の全機能を確認済み
