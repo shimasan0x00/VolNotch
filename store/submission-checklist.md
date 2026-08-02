@@ -28,7 +28,11 @@ Developer Console（https://developer.amazon.com/apps-and-games/console）での
 
 - [ ] **Supported Devices:** Fire タブレットのみを選択（Fire TV / Automotive は外す）
 - [ ] **Availability:** 日本を含む配信国を選択
-- [ ] **Target Audience & Content Rating:** 対象年齢を全年齢向けとし、コンテンツ質問票（暴力・薬物・ヌード・ギャンブル等）にすべて「なし」で回答
+- [ ] **Target Audience & Content Rating:**
+      - 対象年齢は **13 歳以上／一般向け**を選び、**子ども向け（child-directed）とは申告しない**
+        ⚠️ 13 歳未満を含む年齢層を選ぶと Amazon の **Child-Directed App Policy** が適用され、
+        追加の要件・審査が発生する。本アプリは子ども向けに作られた端末ツールではないため該当しない
+      - コンテンツ質問票（暴力・薬物・ヌード・ギャンブル等）はすべて「なし」で回答
 - [ ] **User Data Privacy:** 「ユーザーデータを収集または第三者に送信するか」→ **No**
       （`INTERNET` 権限なし・外部 SDK なしを確認済み。この場合プライバシーポリシー URL は不要）
 
@@ -36,16 +40,34 @@ Developer Console（https://developer.amazon.com/apps-and-games/console）での
 
 ## 3. Appstore Details
 
-`store/listing-ja.md` から貼り付ける（文字数・バイト数は検証済み）。
+### ロケールは 2 つ入れる
 
-| 項目 | 内容 | 実測 |
+**英語（米国）は「翻訳が無いマーケットプレイスすべてで表示されるフォールバック」であり、
+Amazon の審査担当者が読む欄でもある。ここに日本語を入れてはいけない。**
+
+| ロケール | 原本 | 役割 |
 |---|---|---|
-| 表示名 | `VolNotch` | — |
-| 短い説明 | listing-ja.md より | 424 バイト / 上限 2,000 |
-| 長い説明 | listing-ja.md より | 1,152 文字 / 上限 4,000 |
-| 機能ハイライト | listing-ja.md より | 5 行 / 3〜5 行 |
-| キーワード | listing-ja.md より | 任意項目 |
+| **英語（米国）** | `store/listing-en.md` | 必須。フォールバック。審査担当者が読む |
+| **日本語** を追加 | `store/listing-ja.md` | 日本のユーザーに表示される |
 
+英語版には「UI は日本語のみ」である旨と、**常駐通知による減衰の維持が意図した仕様である**旨を
+明記してある（審査担当者に「音量が戻らない不具合」と誤解されないため）。
+
+### 文字数（検証済み）
+
+| 項目 | 英語（米国） | 日本語 | 上限 |
+|---|---|---|---|
+| 表示名 | `VolNotch` | `VolNotch` | — |
+| 短い説明 | 348 バイト | 424 バイト | 2,000 バイト |
+| 長い説明 | 2,699 文字 | 1,152 文字 | 4,000 文字 |
+| 機能ハイライト | 5 行 | 5 行 | 3〜5 行 |
+| キーワード | 任意 | 任意 | — |
+
+- [ ] **カテゴリ: `Utilities`**（サブカテゴリは `All-in-One Tools`。必須でなければ未指定でも可）
+      Amazon はカテゴリに厳格な要件を課しておらず、主にブラウズツリーと
+      Similar / Related / Recommended の推薦に使われる。`Utilities` 配下には
+      `Battery Savers` / `Task & App Managers` / `Wi-Fi Analyzers` など端末調整ツールが並び、
+      本アプリと同じ層。`Music & Audio` は音楽プレイヤー・配信アプリの枠なので採らない
 - [ ] **価格: 無料**
 - [ ] 大アイコン `store/icon_512.png`（512×512 PNG 透過）
 - [ ] 小アイコン `store/icon_114.png`（114×114 PNG 透過）
