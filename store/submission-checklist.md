@@ -49,10 +49,11 @@ Developer Console（https://developer.amazon.com/apps-and-games/console）での
 - [ ] **価格: 無料**
 - [ ] 大アイコン `store/icon_512.png`（512×512 PNG 透過）
 - [ ] 小アイコン `store/icon_114.png`（114×114 PNG 透過）
-- [ ] スクリーンショット 3 枚
-      - `store/screenshot_01_landscape_light.png`（1920×1200・ライト・音量 3/25）
+- [ ] スクリーンショット 4 枚（この順で並べる）
+      - `store/screenshot_01_landscape_light.png`（1920×1200・ライト・メディア音量 3/25）
       - `store/screenshot_02_landscape_dark.png`（1920×1200・ダーク・全体減衰 −6 dB 動作中）
-      - `store/screenshot_03_portrait_light.png`（1200×1920・ライト・縦向き）
+      - `store/screenshot_03_landscape_alarm.png`（1920×1200・ライト・アラーム音量 4/25＝メディア以外のストリーム）
+      - `store/screenshot_04_portrait_light.png`（1200×1920・ライト・縦向き）
 - [ ] プロモ画像（1024×500）は任意 — 初回は省略
 
 ## 4. 提出前の最終確認
@@ -93,9 +94,12 @@ convert captures/store_light_landscape.png -resize 1920x1200 \
 convert captures/store_dark_landscape.png -resize 1920x1200 \
   -background '#0F1614' -gravity center -extent 1920x1200 \
   store/screenshot_02_landscape_dark.png
+convert captures/store_light_alarm.png -resize 1920x1200 \
+  -background '#F6F9F8' -gravity center -extent 1920x1200 \
+  store/screenshot_03_landscape_alarm.png
 convert captures/store_light_portrait.png -resize 1200x1920 \
   -background '#F6F9F8' -gravity center -extent 1200x1920 \
-  store/screenshot_03_portrait_light.png
+  store/screenshot_04_portrait_light.png
 ```
 
 Fire Max 11 の画面は 2000×1200 で Amazon の許容サイズに無いため、長辺に合わせて縮小したうえで
