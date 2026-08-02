@@ -3,14 +3,39 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Material の volume_up (24dp) を中央へ拡大配置したスピーカーアイコン -->
-    <group
-        android:scaleX="2.5"
-        android:scaleY="2.5"
-        android:translateX="24"
-        android:translateY="24">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M3,9v6h4l5,5V4L7,9H3zM16.5,12c0,-1.77 -1.02,-3.29 -2.5,-4.03v8.05c1.48,-0.73 2.5,-2.25 2.5,-4.02zM14,3.23v2.06c2.89,0.86 5,3.54 5,6.71s-2.11,5.85 -5,6.71v2.06c4.01,-0.91 7,-4.49 7,-8.77s-2.99,-7.86 -7,-8.77z" />
-    </group>
+    <!--
+      スライダーのつまみと目盛りを象ったアイコン。
+      VectorDrawable は <line> / <rect> を持たないため、直線は stroke 付きの path に、
+      角丸矩形（rx = 高さの半分 = 完全な丸端）は fill の path に変換している。
+      配置はアダプティブアイコンのセーフゾーン（中央 72x72 = 座標 18〜90）に収まる。
+    -->
+    <path
+        android:pathData="M44,30L44,78"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M60,32L76,32"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M60,50L76,50"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M60,60L70,60"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M60,70L70,70"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <!-- 原本の <rect x="32" y="60" width="24" height="11" rx="5.5"/> と等価な丸端のカプセル -->
+    <path
+        android:pathData="M37.5,60L50.5,60A5.5,5.5 0 0 1 50.5,71L37.5,71A5.5,5.5 0 0 1 37.5,60Z"
+        android:fillColor="#FFFFFF" />
 </vector>
