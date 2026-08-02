@@ -52,7 +52,9 @@ Developer Console（https://developer.amazon.com/apps-and-games/console）での
 - [ ] スクリーンショット 4 枚（この順で並べる）
       - `store/screenshot_01_landscape_light.png`（1920×1200・ライト・メディア音量 3/25）
       - `store/screenshot_02_landscape_dark.png`（1920×1200・ダーク・全体減衰 −6 dB 動作中）
-      - `store/screenshot_03_landscape_alarm.png`（1920×1200・ライト・アラーム音量 4/25＝メディア以外のストリーム）
+      - `store/screenshot_03_landscape_system.png`（1920×1200・ライト・システム音量 3/**7**＝メディア以外のストリーム。
+        この端末ではシステムだけ最大値が 7 で他は 25 のため、最大インデックスを端末・ストリームごとに
+        自動取得していることが伝わる）
       - `store/screenshot_04_portrait_light.png`（1200×1920・ライト・縦向き）
 - [ ] プロモ画像（1024×500）は任意 — 初回は省略
 
@@ -94,9 +96,9 @@ convert captures/store_light_landscape.png -resize 1920x1200 \
 convert captures/store_dark_landscape.png -resize 1920x1200 \
   -background '#0F1614' -gravity center -extent 1920x1200 \
   store/screenshot_02_landscape_dark.png
-convert captures/store_light_alarm.png -resize 1920x1200 \
+convert captures/store_light_system.png -resize 1920x1200 \
   -background '#F6F9F8' -gravity center -extent 1920x1200 \
-  store/screenshot_03_landscape_alarm.png
+  store/screenshot_03_landscape_system.png
 convert captures/store_light_portrait.png -resize 1200x1920 \
   -background '#F6F9F8' -gravity center -extent 1200x1920 \
   store/screenshot_04_portrait_light.png
